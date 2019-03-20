@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scoping\Scoper;
+use App\ProductVariation;
 
 class Product extends Model
 {
@@ -21,5 +22,10 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function variations()
+    {
+        return $this->hasMany(ProductVariation::class)->orderBy('order', 'asc');
     }
 }
