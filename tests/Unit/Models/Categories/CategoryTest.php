@@ -50,7 +50,7 @@ class CategoryTest extends TestCase
         $category = factory(Category::class)->create();
 
         $category->products()->save(
-            factory(Product::class)->make()
+            factory(Product::class)->create()
         );
 
         $this->assertInstanceOf(Product::class, $category->products()->first());

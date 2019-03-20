@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductTest extends TestCase
 {
@@ -14,5 +15,16 @@ class ProductTest extends TestCase
         $product = new Product();
 
         $this->assertEquals('slug', $product->getRouteKeyName());
+    }
+
+    public function test_it_has_many_categories()
+    {
+        $product = factory(Product::class)->create();
+
+        $product->categories()->save(
+            factory(Category::class)->create()
+        );
+
+        $this->assertInstanceOf(Category::class, $product->categories->first());
     }
 }
