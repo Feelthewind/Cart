@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Product;
 use App\Models\Category;
-use App\ProductVariation;
+use App\Models\ProductVariation;
 
 class ProductTest extends TestCase
 {

@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Database\Eloquent\Collection;
 
-class ProductVarianceResource extends JsonResource
+class ProductVariationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +15,10 @@ class ProductVarianceResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($this->resource instanceof Collection) {
+            return ProductVariationResource::collection($this->resource);
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name

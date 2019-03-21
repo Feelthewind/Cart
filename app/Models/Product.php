@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scoping\Scoper;
-use App\ProductVariation;
 
 class Product extends Model
 {
