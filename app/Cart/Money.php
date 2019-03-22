@@ -44,4 +44,3 @@ class Money
     return $this->money;
   }
 }
-
