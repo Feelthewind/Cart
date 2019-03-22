@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\HasPrice;
 use App\Cart\Money;
+use App\Models\Collections\ProductVariationCollection;
+use App\Models\Product;
+use App\Models\ProductVariationType;
+use App\Models\Traits\HasPrice;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductVariation extends Model
 {
@@ -19,9 +22,24 @@ class ProductVariation extends Model
         return new Money($value);
     }
 
+    public function minStock($count)
+    {
+        return min($this->stockCount(), $count);
+    }
+
     public function priceVaries()
     {
         return $this->price->amount() !== $this->product->price->amount();
+    }
+
+    public function inStock()
+    {
+        return $this->stockCount() > 0;
+    }
+
+    public function stockCount()
+    {
+        return $this->stock->sum('pivot.stock');
     }
 
     public function type()
@@ -37,5 +55,17 @@ class ProductVariation extends Model
     public function stocks()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function stock()
+    {
+        return $this->belongsToMany(
+            ProductVariation::class,
+            'product_variation_stock_view'
+        )
+            ->withPivot([
+                'stock',
+                'in_stock'
+            ]);
     }
 }
