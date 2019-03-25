@@ -8,12 +8,20 @@ use App\Http\Requests\Cart\CartStoreRequest;
 use App\Cart\Cart;
 use App\Models\ProductVariation;
 use App\Http\Requests\Cart\CartUpdateRequest;
+use App\Http\Resources\Cart\CartResource;
 
 class CartController extends Controller
 {
     public function __construct()
     {
         $this->middleware(['auth:api']);
+    }
+
+    public function index(Request $request)
+    {
+        $request->user()->load(['cart.product', 'cart.product.variations.stock', 'cart.stock']);
+
+        return new CartResource($request->user());
     }
 
     public function store(CartStoreRequest $request, Cart $cart)
