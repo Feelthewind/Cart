@@ -21,7 +21,9 @@ class CartController extends Controller
     {
         $cart->sync();
 
-        $request->user()->load(['cart.product', 'cart.product.variations.stock', 'cart.stock']);
+        $request->user()->load([
+            'cart.product', 'cart.product.variations.stock', 'cart.stock', 'cart.type'
+        ]);
 
         return (new CartResource($request->user()))
             ->additional([
