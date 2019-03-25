@@ -19,6 +19,8 @@ class CartController extends Controller
 
     public function index(Request $request, Cart $cart)
     {
+        $cart->sync();
+
         $request->user()->load(['cart.product', 'cart.product.variations.stock', 'cart.stock']);
 
         return (new CartResource($request->user()))
@@ -32,13 +34,16 @@ class CartController extends Controller
         return [
             'empty' => $cart->isEmpty(),
             'subtotal' => $cart->subtotal()->formatted(),
-            'total' => $cart->total()->formatted()
+            'total' => $cart->total()->formatted(),
+            'changed' => $cart->hasChanged(),
         ];
     }
 
     public function store(CartStoreRequest $request, Cart $cart)
     {
         $cart->add($request->products);
+
+        $cart->sync();
     }
 
     public function update(ProductVariation $productVariation, CartUpdateRequest $request, Cart $cart)
