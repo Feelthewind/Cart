@@ -30,7 +30,9 @@ class CartController extends Controller
     public function meta($cart)
     {
         return [
-            'empty' => $cart->isEmpty()
+            'empty' => $cart->isEmpty(),
+            'subtotal' => $cart->subtotal()->formatted(),
+            'total' => $cart->total()->formatted()
         ];
     }
 

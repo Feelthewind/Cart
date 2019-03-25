@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Cart\Cart;
 use App\Models\User;
 use App\Models\ProductVariation;
+use App\Cart\Money;
 
 class CartTest extends TestCase
 {
@@ -117,5 +118,41 @@ class CartTest extends TestCase
         );
 
         $this->assertTrue($cart->isEmpty());
+    }
+
+    public function test_it_returns_a_money_instance_for_the_subtotal()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+        );
+
+        $this->assertInstanceOf(Money::class, $cart->subtotal());
+    }
+
+    public function test_it_gets_the_correct_subtotal()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+        );
+
+        $user->cart()->attach(
+            $product = factory(ProductVariation::class)->create([
+                'price' => 1000
+            ]),
+            [
+                'quantity' => 2
+            ]
+        );
+
+        $this->assertEquals(2000, $cart->subtotal()->amount());
+    }
+
+    public function test_it_returns_a_money_instance_for_the_total()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+        );
+
+        $this->assertInstanceOf(Money::class, $cart->total());
     }
 }
