@@ -24,7 +24,11 @@ class MoneyTest extends TestCase
         $this->assertEquals('£10.00', $money->formatted());
     }
 
+<<<<<<< HEAD
     public function test_it_can_add_up()
+=======
+    public function test_it_can_app_up()
+>>>>>>> newone
     {
         $money = new Money(1000);
 
@@ -37,8 +41,11 @@ class MoneyTest extends TestCase
     {
         $money = new Money(1000);
 
+<<<<<<< HEAD
         $money = $money->add(new Money(1000));
 
+=======
+>>>>>>> newone
         $this->assertInstanceOf(BaseMoney::class, $money->instance());
     }
 }

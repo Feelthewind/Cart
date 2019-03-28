@@ -210,6 +210,27 @@ class CartTest extends TestCase
             $user = factory(User::class)->create()
         );
 
+<<<<<<< HEAD
+=======
+        $user->cart()->attach(
+            $product = factory(ProductVariation::class)->create([
+                'price' => 1000
+            ]),
+            [
+                'quantity' => 2
+            ]
+        );
+
+        $this->assertEquals(2000, $cart->total()->amount());
+    }
+
+    public function test_it_can_return_the_correct_total_with_shipping()
+    {
+        $cart = new Cart(
+            $user = factory(User::class)->create()
+        );
+
+>>>>>>> newone
         $shipping = factory(ShippingMethod::class)->create([
             'price' => 1000
         ]);
