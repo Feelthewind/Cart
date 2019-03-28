@@ -210,8 +210,6 @@ class CartTest extends TestCase
             $user = factory(User::class)->create()
         );
 
-<<<<<<< HEAD
-=======
         $user->cart()->attach(
             $product = factory(ProductVariation::class)->create([
                 'price' => 1000
@@ -230,7 +228,6 @@ class CartTest extends TestCase
             $user = factory(User::class)->create()
         );
 
->>>>>>> newone
         $shipping = factory(ShippingMethod::class)->create([
             'price' => 1000
         ]);

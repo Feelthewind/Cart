@@ -31,11 +31,7 @@ class CartController extends Controller
             ]);
     }
 
-<<<<<<< HEAD
-    public function meta($cart, $request)
-=======
     public function meta(Cart $cart, Request $request)
->>>>>>> newone
     {
         return [
             'empty' => $cart->isEmpty(),
