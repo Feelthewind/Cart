@@ -2,7 +2,6 @@
 
 namespace App\Cart;
 
-use App\Models\User;
 use App\Models\ShippingMethod;
 
 
@@ -14,7 +13,7 @@ class Cart
 
   protected $shipping;
 
-  public function __construct(User $user)
+  public function __construct($user)
   {
     $this->user = $user;
   }
@@ -75,7 +74,7 @@ class Cart
 
   public function isEmpty()
   {
-    return $this->user->cart->sum('pivot.quantity') === 0;
+    return $this->user->cart->sum('pivot.quantity') <= 0;
   }
 
   public function subtotal()
