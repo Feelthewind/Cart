@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Cart\Money;
-use App\Models\Collections\ProductVariationCollection;
 use App\Models\Product;
 use App\Models\ProductVariationType;
 use App\Models\Traits\HasPrice;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Collections\ProductVariationCollection;
 
 class ProductVariation extends Model
 {
@@ -67,5 +67,10 @@ class ProductVariation extends Model
                 'stock',
                 'in_stock'
             ]);
+    }
+
+    public function newCollection(array $models = [])
+    {
+        return new ProductVariationCollection($models);
     }
 }
