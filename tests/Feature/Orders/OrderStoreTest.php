@@ -91,6 +91,10 @@ class OrderStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        $user->cart()->sync(
+            $product = $this->productWithStock()
+        );
+
         list($address, $shipping) = $this->orderDependencies($user);
 
         $this->jsonAs($user, 'POST', 'api/orders', [
@@ -123,6 +127,24 @@ class OrderStoreTest extends TestCase
         $this->assertDatabaseHas('product_variation_order', [
             'product_variation_id' => $product->id
         ]);
+    }
+
+    public function test_it_fails_to_create_order_if_cart_is_empty()
+    {
+        $user = factory(User::class)->create();
+
+        $user->cart()->sync([
+            ($product = $this->productWithStock())->id =>
+            ['quantity' => 0]
+        ]);
+
+        list($address, $shipping) = $this->orderDependencies($user);
+
+        $response = $this->jsonAs($user, 'POST', 'api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id,
+        ])
+            ->assertStatus(400);
     }
 
     protected function productWithStock()
