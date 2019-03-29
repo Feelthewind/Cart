@@ -20,12 +20,14 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request)
     {
-        return $this->createOrder($request);
+        $order = $this->createOrder($request);
+
+        //
     }
 
     protected function createOrder(Request $request)
     {
-        $request->user()->orders()->create(
+        return $request->user()->orders()->create(
             array_merge($request->only(['address_id', 'shipping_method_id']), [
                 'subtotal' => $this->cart->subtotal()->amount()
             ])
