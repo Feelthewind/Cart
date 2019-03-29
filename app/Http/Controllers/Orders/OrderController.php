@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\OrderStoreRequest;
 use App\Cart\Cart;
 use App\Events\Order\OrderCreated;
+use App\Http\Resources\OrderResource;
 
 class OrderController extends Controller
 {
@@ -28,6 +29,8 @@ class OrderController extends Controller
         $order->products()->sync($cart->products()->forSyncing());
 
         event(new OrderCreated($order));
+
+        return new OrderResource($order);
     }
 
     protected function createOrder(Request $request, Cart $cart)
