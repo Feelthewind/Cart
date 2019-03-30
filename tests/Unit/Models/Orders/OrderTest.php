@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Models\ShippingMethod;
 use App\Models\ProductVariation;
+use App\Cart\Money;
 
 class OrderTest extends TestCase
 {
@@ -79,5 +80,36 @@ class OrderTest extends TestCase
         );
 
         $this->assertEquals($quantity, $order->products->first()->pivot->quantity);
+    }
+
+    public function test_it_returns_a_money_instance_for_the_subtotal()
+    {
+        $order = factory(Order::class)->create([
+            'user_id' => factory(User::class)->create()->id
+        ]);
+
+        $this->assertInstanceOf(Money::class, $order->subtotal);
+    }
+
+    public function test_it_returns_a_money_instance_for_total()
+    {
+        $order = factory(Order::class)->create([
+            'user_id' => factory(User::class)->create()->id
+        ]);
+
+        $this->assertInstanceOf(Money::class, $order->total());
+    }
+
+    public function test_it_adds_shipping_onto_the_total()
+    {
+        $order = factory(Order::class)->create([
+            'user_id' => factory(User::class)->create()->id,
+            'subtotal' => 1000,
+            'shipping_method_id' => factory(ShippingMethod::class)->create([
+                'price' => 1000
+            ])
+        ]);
+
+        $this->assertEquals(2000, $order->total()->amount());
     }
 }
