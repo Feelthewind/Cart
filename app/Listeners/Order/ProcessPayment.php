@@ -7,6 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Cart\Cart;
 use App\Cart\Payments\Gateway;
+use App\Exceptions\PaymentFailedException;
+use App\Events\Orders\OrderPaymentFailed;
 
 class ProcessPayment implements ShouldQueue
 {
@@ -21,7 +23,7 @@ class ProcessPayment implements ShouldQueue
     $this->gateway = $gateway;
   }
 
-  /**
+  /**j
      * Handle the event.
      *
      * @param  OrderCreated  $event
@@ -29,6 +31,19 @@ class ProcessPayment implements ShouldQueue
      */
   public function handle(OrderCreated $event)
   {
-    dd('a');
+    $order = $event->order;
+
+    try {
+      $this->gateway->withUser($order->user)
+        ->getCustomer()
+        ->charge(
+          $order->paymentMethod,
+          $order->total()->amount()
+        );
+
+      // event
+    } catch (PaymentFailedException $e) {
+      event(new OrderPaymentFailed($order));
+    }
   }
 }
