@@ -12,6 +12,7 @@ use App\Models\ShippingMethod;
 use App\Models\ProductVariation;
 use App\Cart\Money;
 use App\Models\PaymentMethod;
+use App\Models\Transaction;
 
 class OrderTest extends TestCase
 {
@@ -59,8 +60,6 @@ class OrderTest extends TestCase
 
         $this->assertInstanceOf(PaymentMethod::class, $order->paymentMethod);
     }
-
-
 
     public function test_it_has_many_products()
     {
@@ -123,5 +122,18 @@ class OrderTest extends TestCase
         ]);
 
         $this->assertEquals(2000, $order->total()->amount());
+    }
+
+    public function test_it_has_many_transactions()
+    {
+        $order = factory(Order::class)->create([
+            'user_id' => factory(User::class)->create()->id
+        ]);
+
+        factory(Transaction::class)->create([
+            'order_id' => $order->id
+        ]);
+
+        $this->assertInstanceOf(Transaction::class, $order->transactions->first());
     }
 }
