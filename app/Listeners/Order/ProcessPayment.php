@@ -8,7 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Cart\Cart;
 use App\Cart\Payments\Gateway;
 use App\Exceptions\PaymentFailedException;
-use App\Events\Orders\OrderPaymentFailed;
+use App\Events\Order\OrderPaid;
+use App\Events\Order\OrderPaymentFailed;
 
 class ProcessPayment implements ShouldQueue
 {
@@ -41,7 +42,7 @@ class ProcessPayment implements ShouldQueue
           $order->total()->amount()
         );
 
-      // event
+      event(new OrderPaid($order));
     } catch (PaymentFailedException $e) {
       event(new OrderPaymentFailed($order));
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Events\Orders;
+namespace App\Events\Order;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use App\Models\Order;
 
-class OrderPaymentFailed
+class OrderPaid
 {
     use Dispatchable, SerializesModels;
 
@@ -22,3 +22,4 @@ class OrderPaymentFailed
         $this->order = $order;
     }
 }
+
